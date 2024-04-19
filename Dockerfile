@@ -8,7 +8,7 @@ RUN gradle build --no-daemon
 FROM eclipse-temurin:17-jre-alpine
 RUN mkdir /app
 
-EXPOSE 8080
+EXPOSE 8084
 
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/clients.jar
 
