@@ -3,6 +3,7 @@ package com.example.clients.service;
 import com.example.clients.dto.request.ClientRequest;
 import com.example.clients.dto.request.CompanyRequest;
 import com.example.clients.dto.response.ClientResponse;
+import com.example.clients.dto.response.CompanyResponse;
 import com.example.clients.entity.Address;
 import com.example.clients.entity.Client;
 import com.example.clients.entity.Company;
@@ -72,6 +73,24 @@ public class ClientService {
             response = custResponseBuilder.buildResponse(HttpStatus.NOT_FOUND.value(), "Client Not Found With ID: "+id);
         }catch (Exception e){
             response = custResponseBuilder.buildResponse(HttpStatus.BAD_REQUEST.value(), "Error deleting Client", e.getMessage());
+        }
+        return response;
+    }
+
+    public ResponseEntity<ApiResponse> getOneById(Long id) {
+        ResponseEntity<ApiResponse> response;
+
+        try {
+            Client c1 = findClientById(id);
+            ClientResponse clientResponse = modelMapper.map(c1, ClientResponse.class);
+            response = custResponseBuilder.buildResponse(HttpStatus.OK.value(), clientResponse);
+
+        }catch (EntityNotFoundException exception){
+            response = custResponseBuilder.buildResponse(HttpStatus.NOT_FOUND.value(), "Client Not Found With ID: "+id);
+        }
+        catch (Exception e){
+            response = custResponseBuilder.buildResponse(HttpStatus.BAD_REQUEST.value(), "Error Getting Client with ID: "+id, e.getMessage());
+
         }
         return response;
     }

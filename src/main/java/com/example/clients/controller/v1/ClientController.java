@@ -24,6 +24,10 @@ public class ClientController {
     private ResponseEntity<ApiResponse> listAll(){
         return clientService.findAll();
     }
+    @GetMapping("/{id}")
+    private ResponseEntity<ApiResponse> getOneById(@PathVariable("id") Long id){
+        return clientService.getOneById(id);
+    }
     @PostMapping("")
     private ResponseEntity<ApiResponse> createClient(@RequestBody @Valid ClientRequest clientRequest){
         return clientService.createClient(clientRequest);

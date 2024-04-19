@@ -2,6 +2,7 @@ package com.example.clients.service;
 
 import com.example.clients.dto.request.CompanyRequest;
 import com.example.clients.dto.response.CompanyResponse;
+import com.example.clients.entity.Client;
 import com.example.clients.entity.Company;
 import com.example.clients.repository.CompanyRepository;
 import com.example.clients.utils.response.ApiResponse;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+
 @Service
 public class CompanyService {
     private final CompanyRepository companyRepository;
@@ -63,5 +66,40 @@ public class CompanyService {
 
     public Company findCompanyById(Long id) {
         return companyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Company not found with id: "+id));
+    }
+
+    public ResponseEntity<ApiResponse> getOneById(Long id) {
+        ResponseEntity<ApiResponse> response;
+
+        try {
+            Company company = findCompanyById(id);
+            CompanyResponse companyResponse = modelMapper.map(company, CompanyResponse.class);
+            response = custResponseBuilder.buildResponse(HttpStatus.OK.value(), companyResponse);
+
+        }catch (EntityNotFoundException exception){
+            response = custResponseBuilder.buildResponse(HttpStatus.NOT_FOUND.value(), "Company Not Found With ID: "+id);
+        }
+        catch (Exception e){
+            response = custResponseBuilder.buildResponse(HttpStatus.BAD_REQUEST.value(), "Error Getting Company with ID: "+id, e.getMessage());
+
+        }
+        return response;
+    }
+    public ResponseEntity<ApiResponse> updateCompany(Long id, CompanyRequest companyRequest) {
+        ResponseEntity<ApiResponse> response;
+
+        try {
+            Company c1 = findCompanyById(id);
+
+            modelMapper.map(companyRequest, c1);
+            c1 = companyRepository.save(c1);
+            CompanyResponse companyResponse = modelMapper.map(c1, CompanyResponse.class);
+            response = custResponseBuilder.buildResponse(HttpStatus.OK.value(), "Project Updated Succesfully", companyResponse);
+        }catch (EntityNotFoundException exception){
+            response = custResponseBuilder.buildResponse(HttpStatus.NOT_FOUND.value(), "Company Not Found With ID: "+id);
+        }catch (Exception e){
+            response = custResponseBuilder.buildResponse(HttpStatus.BAD_REQUEST.value(), "Error udpdating Company", e.getMessage());
+        }
+        return response;
     }
 }

@@ -23,6 +23,10 @@ public class CompanyController {
     private ResponseEntity<ApiResponse> listAll(){
         return companyService.findAll();
     }
+    @GetMapping("/{id}")
+    private ResponseEntity<ApiResponse> getOneById(@PathVariable("id") Long id){
+        return companyService.getOneById(id);
+    }
     @PostMapping("")
     private ResponseEntity<ApiResponse> createCompany(@RequestBody @Valid CompanyRequest companyRequest){
         return companyService.createCompany(companyRequest);
@@ -30,5 +34,9 @@ public class CompanyController {
     @DeleteMapping("")
     private ResponseEntity<ApiResponse> deleteCompany(@RequestParam("id") Long id){
         return companyService.deleteCompany(id);
+    }
+    @PutMapping("/{id}")
+    private ResponseEntity<ApiResponse> updateCompany(@PathVariable("id") Long id, @RequestBody @Valid CompanyRequest request){
+        return companyService.updateCompany(id, request);
     }
 }
