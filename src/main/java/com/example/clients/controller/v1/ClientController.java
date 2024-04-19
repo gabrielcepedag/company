@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("v1/clients")
+@RequestMapping("api/v1/clients")
 public class ClientController {
     private ClientService clientService;
 

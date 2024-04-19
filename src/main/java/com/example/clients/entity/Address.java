@@ -21,6 +21,7 @@ public class Address implements Serializable {
     private String city;
     private String state;
     private String type;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne()
+    @JoinColumn(name = "client_id")
     private Client client;
 }

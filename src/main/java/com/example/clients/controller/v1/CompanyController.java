@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/companies")
+@RequestMapping("api/v1/companies")
 public class CompanyController {
     private CompanyService companyService;
 
